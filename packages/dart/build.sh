@@ -13,13 +13,15 @@ TERMUX_PKG_DEPENDS="gzip, tar"
 
 termux_step_get_source() {
 	# UNSAFE
-	sudo ln -sf python2 /usr/bin/python
+	#sudo ln -sf python2 /usr/bin/python
 
 	mkdir -p $TERMUX_PKG_SRCDIR
 	cd $TERMUX_PKG_SRCDIR
 
 	git clone --depth=1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
-	export PATH="$(pwd)/depot_tools:${PATH}"
+	mkdir -p depot_tools/fakebin
+	ln -sfr /usr/bin/python2 depot_tools/fakebin/python
+	export PATH="$(pwd)/depot_tools/fakebin:$(pwd)/depot_tools:${PATH}"
 
 	fetch dart
 
@@ -71,5 +73,5 @@ termux_step_post_make_install() {
 		$TERMUX_PREFIX/etc/profile.d/dart-pub-bin.sh
 
 	# UNSAFE
-	sudo ln -sf python3 /usr/bin/python
+	#sudo ln -sf python3 /usr/bin/python
 }
